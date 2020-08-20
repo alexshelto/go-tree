@@ -1,3 +1,4 @@
+
 /*
 Alex Shelton
 tree file diplay console tool
@@ -16,6 +17,15 @@ import (
 
 
 
+func output(msg string, indent int) {
+  fmt.Print("+")
+  for x:=0; x < indent; x++ {
+    fmt.Print("\t")
+  }
+  fmt.Println("|-",msg)
+
+}
+
 
 
 func recursivePrint(files []os.FileInfo, level int, dirname string) {
@@ -24,25 +34,21 @@ func recursivePrint(files []os.FileInfo, level int, dirname string) {
 
 	for _, f := range files {
 
-		for indent := 0; indent < level; indent++ {
-			fmt.Println("\t")
-		}
-
 		if(f.IsDir() == false) {
-			fmt.Println(f.Name())
+			output(f.Name(), level)
 
 		}else if f.IsDir() == true && f.Name() != ".git"{
-			fmt.Println("[" + f.Name() + "]")
+			output("[" + f.Name() + "]", level)
 
-			dirname, err := os.Getwd()
-			if err != nil {log.Fatal(err)}
-			dirname = dirname + "/" + f.Name() 
-			fmt.Println("Checking subdirectory: ", dirname)
+			// dirname, err := os.Getwd()
+			// if err != nil {log.Fatal(err)}
+			// dirname = dirname + "/" + f.Name() 
+			// fmt.Println("Checking subdirectory: ", dirname)
 
 
-			folder, err := ioutil.ReadDir(dirname)
-			if err != nil {log.Fatal(err)}
-			recursivePrint(folder, level + 1, dirname)
+			// folder, err := ioutil.ReadDir(dirname)
+			// if err != nil {log.Fatal(err)}
+			// recursivePrint(folder, level + 1, dirname)
 		}
 	}
 }
