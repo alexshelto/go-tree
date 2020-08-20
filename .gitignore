@@ -13,3 +13,8 @@
 
 # Dependency directories (remove the comment below to include it)
 # vendor/
+
+# Testing directories
+/dir1
+/dir2
+/testdir
