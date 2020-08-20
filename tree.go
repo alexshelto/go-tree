@@ -10,6 +10,7 @@ package main
 
 import (
 	"fmt"
+	"flag"
 	"io/ioutil"
 	"os"
 	"log"
@@ -65,15 +66,33 @@ func recursivePrint(files []os.FileInfo, level int, dirname string) {
 
 func main() {
 
-	dirname, err := os.Getwd()
-	if err != nil {
-			log.Println(err)
-	}
 
-	folder, err := ioutil.ReadDir(dirname)
-	if err != nil {log.Fatal(err)}
+
+
+
+	// args := os.Args[1:]
+
+	// if len(args) == 0 {
+	// 	fmt.Println("Need to specify path. use '.' for current directory")
+	// 	return
+	// }
+
+
+	// dirname, err := os.Getwd()
+	// if err != nil {
+	// 		log.Println(err)
+	// }
+
+	onlyDirectories := flag.Bool("d", false, "Listing Directories only" )
+	flag.Parse()
+
+
+	// folder, err := ioutil.ReadDir(dirname)
+	// if err != nil {log.Fatal(err)}
 
 	
-	fmt.Println("[" + dirname + "]")
-	recursivePrint(folder, 0, dirname)
+	// fmt.Println("[" + dirname + "]")
+	// recursivePrint(folder, 0, dirname)
+
+	fmt.Println(*onlyDirectories)
 }
