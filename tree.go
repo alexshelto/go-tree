@@ -18,6 +18,20 @@ import (
 
 
 
+func getDirName(path string)string {
+	if path == "." {
+		dirname, err := os.Getwd()
+		if err != nil {
+				log.Println(err)
+		}
+		return dirname
+	}else{
+		return path
+	}
+}
+
+
+
 func output(msg string, isFile bool, indent int) {
   fmt.Print("  |")
   for x:=0; x < indent; x++ {
@@ -31,7 +45,6 @@ func output(msg string, isFile bool, indent int) {
 	}else{
 		outputString += "╵-"
 	}
-
 	if isFile {
 		fmt.Println(outputString,msg)
 	}else{
@@ -41,22 +54,24 @@ func output(msg string, isFile bool, indent int) {
 
 
 
-func recursivePrint(files []os.FileInfo, level int, dirname string) {
+func recursivePrint(files []os.FileInfo, level int, dirname string, dirOnly bool, nFiles *int, nFolders *int) {
 	for _, f := range files {
 
 		//Outputting file logic
-		if f.IsDir() == false {
+		if f.IsDir() == false && !dirOnly {
 			output(f.Name(), true, level)
+			*nFiles += 1
 
 		}else if f.IsDir() == true && f.Name() != ".git"{
 			//Sub directory logic
 			output(f.Name(), false, level)
+			*nFolders += 1
 
 			path := dirname + "/" + f.Name()
 			folder, err := ioutil.ReadDir(path)
 			if err != nil {log.Fatal(err)}
 
-			recursivePrint(folder, level + 1, path)
+			recursivePrint(folder, level + 1, path, dirOnly, nFiles, nFolders)
 		}
 	}
 }
@@ -65,34 +80,21 @@ func recursivePrint(files []os.FileInfo, level int, dirname string) {
 
 
 func main() {
-
-
-
-
-
-	// args := os.Args[1:]
-
-	// if len(args) == 0 {
-	// 	fmt.Println("Need to specify path. use '.' for current directory")
-	// 	return
-	// }
-
-
-	// dirname, err := os.Getwd()
-	// if err != nil {
-	// 		log.Println(err)
-	// }
-
 	onlyDirectories := flag.Bool("d", false, "Listing Directories only" )
+
+	var dirname string
+	dirname = getDirName(".")
+
+	folder, err := ioutil.ReadDir(dirname)
+	if err != nil {log.Fatal(err)}
 	flag.Parse()
 
 
-	// folder, err := ioutil.ReadDir(dirname)
-	// if err != nil {log.Fatal(err)}
 
-	
-	// fmt.Println("[" + dirname + "]")
-	// recursivePrint(folder, 0, dirname)
+	nFiles := 0
+	nFolders := 0
+	fmt.Println("[" + dirname + "]")
+	recursivePrint(folder, 0, dirname, *onlyDirectories, &nFiles, &nFolders)
+	fmt.Println("Number of directories: ", nFolders, ", Number of files: " , nFiles)
 
-	fmt.Println(*onlyDirectories)
 }
