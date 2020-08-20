@@ -41,7 +41,6 @@ func output(msg string, isFile bool, indent int) {
 
 
 func recursivePrint(files []os.FileInfo, level int, dirname string) {
-
 	for _, f := range files {
 
 		//Outputting file logic
@@ -70,7 +69,7 @@ func main() {
 	if err != nil {
 			log.Println(err)
 	}
-	
+
 	folder, err := ioutil.ReadDir(dirname)
 	if err != nil {log.Fatal(err)}
 
