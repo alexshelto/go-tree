@@ -1,5 +1,9 @@
 # go-tree
 
+#### TODO
+* Config file
+* blacklisted directories. ex: node_modules, git, etc
+
 ### Command line tool to display files in directories from current path
 ### Recursively loops through directories and outputs files/folders
 
