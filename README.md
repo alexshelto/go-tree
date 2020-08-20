@@ -1,6 +1,7 @@
 # go-tree
 
 #### TODO
+* Displaying all files from directory before any dirs. currently alphabetical 
 * Config file
 * blacklisted directories. ex: node_modules, git, etc
 
