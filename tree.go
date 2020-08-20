@@ -17,27 +17,12 @@ import (
 )
 
 
-
-func getDirName(path string)string {
-	if path == "." {
-		dirname, err := os.Getwd()
-		if err != nil {
-				log.Println(err)
-		}
-		return dirname
-	}else{
-		return path
-	}
-}
-
-
-
+//Displaying file || folder logic
 func output(msg string, isFile bool, indent int) {
   fmt.Print("  |")
   for x:=0; x < indent; x++ {
     fmt.Print("\t")
 	}
-
 	outputString := ""
 	//initial file
 	if indent < 1 {
@@ -56,12 +41,10 @@ func output(msg string, isFile bool, indent int) {
 
 func recursivePrint(files []os.FileInfo, level int, dirname string, dirOnly bool, nFiles *int, nFolders *int) {
 	for _, f := range files {
-
 		//Outputting file logic
 		if f.IsDir() == false && !dirOnly {
 			output(f.Name(), true, level)
 			*nFiles += 1
-
 		}else if f.IsDir() == true && f.Name() != ".git"{
 			//Sub directory logic
 			output(f.Name(), false, level)
@@ -80,21 +63,27 @@ func recursivePrint(files []os.FileInfo, level int, dirname string, dirOnly bool
 
 
 func main() {
+	//FLAGS
 	onlyDirectories := flag.Bool("d", false, "Listing Directories only" )
 
-	var dirname string
-	dirname = getDirName(".")
-
+	//Getting current working directory:
+	dirname, err := os.Getwd()
+		if err != nil {
+				log.Println(err)
+		}
+	
+	//list of files in initial directory
 	folder, err := ioutil.ReadDir(dirname)
 	if err != nil {log.Fatal(err)}
-	flag.Parse()
-
-
-
+	//parsing flags
+	flag.Parse() 
+	//Initializing folder and file counter
 	nFiles := 0
 	nFolders := 0
+	//Recursively pringing directories
 	fmt.Println("[" + dirname + "]")
 	recursivePrint(folder, 0, dirname, *onlyDirectories, &nFiles, &nFolders)
 	fmt.Println("Number of directories: ", nFolders, ", Number of files: " , nFiles)
 
+	return
 }
