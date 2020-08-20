@@ -4,7 +4,7 @@
 ### Recursively loops through directories and outputs files/folders
 
 ### Console output:
-![alt text](https://raw.githubusercontent.com/alexshelto/go-tree/master/screenshots/noflags.jpeg)
+![alt text](https://raw.githubusercontent.com/alexshelto/go-tree/master/screenshots/noflags.jpg)
 
-![alt text](https://raw.githubusercontent.com/alexshelto/go-tree/master/screenshots/d-flag.jpeg)
+![alt text](https://raw.githubusercontent.com/alexshelto/go-tree/master/screenshots/d-flag.jpg)
 
