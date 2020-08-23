@@ -16,6 +16,24 @@ import (
 )
 
 
+var (
+  File = Teal
+  Folder = Magenta
+)
+
+var (
+  Teal    = Color("\033[1;36m%s\033[0m")
+  Magenta = Color("\033[1;35m%s\033[0m")
+)
+
+//function allows me to PrintLn with a color
+func Color(colorString string) func(...interface{}) string {
+  sprint := func(args ...interface{}) string {
+    return fmt.Sprintf(colorString,
+      fmt.Sprint(args...))
+  }
+  return sprint
+}
 
 //retrieves all files and folders in dir, currently sorted ABC
 //sorting files first then folders
@@ -57,17 +75,15 @@ func output(msg string, isFile bool, indent int) {
   for x:=0; x < indent; x++ {
     fmt.Print("\t")
   }
-  outputString := ""
-  //initial file
   if indent < 1 {
-    outputString += "-"
+    fmt.Print("-")
   }else{
-    outputString += " ╵-"
+    fmt.Print(" ╵-")
   }
   if isFile {
-    fmt.Println(outputString,msg)
+    fmt.Println(File(msg))
   }else{
-    fmt.Println(outputString + " [" + msg + "]")
+    fmt.Println(Folder(" [" + msg + "]"))
   }
 }
 
@@ -118,7 +134,7 @@ func main() {
   nFolders := 0
 
   //Recursively pringing directories
-  fmt.Println("[" + *pathToSearch + "]")
+  fmt.Println(Folder("[" + *pathToSearch + "]"))
   recursivePrint(folder, dirBlackList, 0, *pathToSearch, *onlyDirectories, &nFiles, &nFolders)
   fmt.Println("Number of directories: ", nFolders, ", Number of files: " , nFiles)
 
