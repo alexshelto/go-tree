@@ -18,7 +18,7 @@
 ``` 
 
 ### Console output:
-![alt text](https://raw.githubusercontent.com/alexshelto/go-tree/master/screenshots/noflags.jpg)
+![alt text](https://raw.githubusercontent.com/alexshelto/go-tree/master/screenshots/output.jpg)
 
-![alt text](https://raw.githubusercontent.com/alexshelto/go-tree/master/screenshots/d-flag.jpg)
+![alt text](https://raw.githubusercontent.com/alexshelto/go-tree/master/screenshots/flags.jpg)
 
