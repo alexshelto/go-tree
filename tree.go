@@ -5,6 +5,20 @@ tree file diplay console tool
 
 recursively lists directory files and folders 
 */
+
+
+
+//TODO:
+/*
+Passing either slices or arrays of blacklists into the function via flag
+passing in blacklists without a size speceification
+
+block python system files and all that garb
+*/
+
+
+
+
 package main
 
 import (
@@ -58,7 +72,7 @@ func returnSortedDir(path string) []os.FileInfo {
 }
 
 
-func isIn(list [3]string, value string)bool{
+func isIn(list [4]string, value string)bool{
   for _,item := range list {
     if item == value {
       return true
@@ -88,7 +102,7 @@ func output(msg string, isFile bool, indent int) {
 }
 
 
-func recursivePrint(files []os.FileInfo, blackList [3]string, level int, dirname string, dirOnly bool, nFiles *int, nFolders *int) {
+func recursivePrint(files []os.FileInfo, blackList [4]string, level int, dirname string, dirOnly bool, nFiles *int, nFolders *int) {
   //files loop is in ABC order not files first
   for _, f := range files {
     //Outputting file logic
@@ -111,8 +125,10 @@ func recursivePrint(files []os.FileInfo, blackList [3]string, level int, dirname
 
 
 func main() {
+
+  //lib, python3.x, site-packages, include, pip, _internal, operations, models, commands, req, utils, vendor, distlib, etc PYTHON
   
-  dirBlackList := [3]string{".git", "node_modules", "__pycache__"}
+  dirBlackList := [4]string{".git", "node_modules", "__pycache__", ".DS_Store"}
   //FLAGS
   onlyDirectories := flag.Bool("d", false, "Listing Directories only" )
   pathToSearch := flag.String("p", ".", "Directory to start search from")
