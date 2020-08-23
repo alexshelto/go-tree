@@ -17,9 +17,28 @@ import (
 )
 
 
-// func sortFilesFirst(files []os.FileInfo) {
 
-// }
+//retrieves all files and folders in dir, currently sorted ABC
+//sorting files first then folders
+//in for loop if index is not a file, checks list from rear for file to switch to
+func returnSortedDir(path string) []os.FileInfo {
+	//gathering file contents
+	files, err := ioutil.ReadDir(path)
+	if err != nil {log.Fatal(err)}
+
+	for x := 0; x < len(files)-1; x++ {
+		//if its a directory move to back
+		if files[x].IsDir() {
+			for i := len(files)-1; i > 0; i-- {
+				if !files[i].IsDir() {
+					files[i], files[x] = files[x], files[i]
+					break
+				}
+			}
+		}
+	}
+	return files
+}
 
 
 func isIn(list [3]string, value string)bool{
@@ -35,26 +54,27 @@ func isIn(list [3]string, value string)bool{
 
 //Displaying file || folder logic
 func output(msg string, isFile bool, indent int) {
-  fmt.Print("  |")
+  fmt.Print(" |")
   for x:=0; x < indent; x++ {
-    fmt.Print("  ")
+    fmt.Print("\t")
 	}
 	outputString := ""
 	//initial file
 	if indent < 1 {
 		outputString += "-"
 	}else{
-		outputString += "╵-"
+		outputString += " ╵-"
 	}
 	if isFile {
 		fmt.Println(outputString,msg)
 	}else{
-		fmt.Println(outputString + "[" + msg + "]")
+		fmt.Println(outputString + " [" + msg + "]")
 	}
 }
 
 
 func recursivePrint(files []os.FileInfo, blackList [3]string, level int, dirname string, dirOnly bool, nFiles *int, nFolders *int) {
+	//files loop is in ABC order not files first
 	for _, f := range files {
 		//Outputting file logic
 		if f.IsDir() == false && !dirOnly {
@@ -64,11 +84,9 @@ func recursivePrint(files []os.FileInfo, blackList [3]string, level int, dirname
 			//Sub directory logic
 			output(f.Name(), false, level)
 			*nFolders += 1
-
+			//enter next folder path recursively
 			path := dirname + "/" + f.Name()
-			folder, err := ioutil.ReadDir(path)
-			if err != nil {log.Fatal(err)}
-
+			folder := returnSortedDir(path)
 			recursivePrint(folder, blackList, level + 1, path, dirOnly, nFiles, nFolders)
 		}
 	}
@@ -94,11 +112,8 @@ func main() {
 		*pathToSearch = path
 	}
 
-		//list of files in start directory
-	folder, err := ioutil.ReadDir(*pathToSearch)
-	if err != nil {log.Fatal(err)}
+	folder := returnSortedDir(*pathToSearch)
 	
-
 	//Initializing folder and file counter
 	nFiles := 0
 	nFolders := 0
