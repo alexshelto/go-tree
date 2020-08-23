@@ -49,6 +49,29 @@ func Color(colorString string) func(...interface{}) string {
   return sprint
 }
 
+// func generateBlackList(enviornment string)[]string {
+//   switch enviornment {
+//   case "py":
+//     blackList := [16]string{".git", "__pycache__", "DS_Store","lib", "python3.7", "site-packages","include", "pip", "_internal", "operations", "models", "commands", "req", "utils", "vendor", "distlib"} 
+//     return blackList
+//   case "js":
+//     blackList := [3]string{"node_modules", ".git", "DS_Store"}
+//     return blackList
+  
+//   case "default":
+//     blackList := [2]string{".git", ".DS_Store"}
+//     return blackList
+  
+//   default:
+//     fmt.Println("Invalid blacklist")
+//     flags.printDefaults()
+//     os.Exit(1)
+// }
+// }
+
+
+
+
 //retrieves all files and folders in dir, currently sorted ABC
 //sorting files first then folders
 //in for loop if index is not a file, checks list from rear for file to switch to
@@ -72,7 +95,7 @@ func returnSortedDir(path string) []os.FileInfo {
 }
 
 
-func isIn(list [4]string, value string)bool{
+func isIn(list []string, value string)bool{
   for _,item := range list {
     if item == value {
       return true
@@ -102,7 +125,7 @@ func output(msg string, isFile bool, indent int) {
 }
 
 
-func recursivePrint(files []os.FileInfo, blackList [4]string, level int, dirname string, dirOnly bool, nFiles *int, nFolders *int) {
+func recursivePrint(files []os.FileInfo, blackList []string, level int, dirname string, dirOnly bool, nFiles *int, nFolders *int) {
   //files loop is in ABC order not files first
   for _, f := range files {
     //Outputting file logic
@@ -116,7 +139,7 @@ func recursivePrint(files []os.FileInfo, blackList [4]string, level int, dirname
       //enter next folder path recursively
       path := dirname + "/" + f.Name()
       folder := returnSortedDir(path)
-      recursivePrint(folder, blackList, level + 1, path, dirOnly, nFiles, nFolders)
+      recursivePrint(folder, blackList[:], level + 1, path, dirOnly, nFiles, nFolders)
     }
   }
 }
@@ -128,10 +151,14 @@ func main() {
 
   //lib, python3.x, site-packages, include, pip, _internal, operations, models, commands, req, utils, vendor, distlib, etc PYTHON
   
-  dirBlackList := [4]string{".git", "node_modules", "__pycache__", ".DS_Store"}
+  dirBlackList := [19]string{"node_modules",".git", "__pycache__", "DS_Store","lib", "python3.7", "site-packages","include", "pip", "_internal", "operations", "models", "commands", "req", "utils", "vendor", "distlib", "bin", "venv"} 
+
   //FLAGS
   onlyDirectories := flag.Bool("d", false, "Listing Directories only" )
   pathToSearch := flag.String("p", ".", "Directory to start search from")
+  // whatToBlacklist := flag.String("bl", "default", "System folders to blacklist. \npy || js. hides folders like bin and node_modules")
+  // dirBlackList := generateBlackList(*whatToBlacklist)
+
 
   flag.Parse() 
   
@@ -151,7 +178,7 @@ func main() {
 
   //Recursively pringing directories
   fmt.Println(Folder("[" + *pathToSearch + "]"))
-  recursivePrint(folder, dirBlackList, 0, *pathToSearch, *onlyDirectories, &nFiles, &nFolders)
+  recursivePrint(folder, dirBlackList[:], 0, *pathToSearch, *onlyDirectories, &nFiles, &nFolders)
   fmt.Println("Number of directories: ", nFolders, ", Number of files: " , nFiles)
 
 }
