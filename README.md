@@ -14,7 +14,10 @@
 ```sh
 ./tree
 ``` 
-
+* Specify path
+```sh
+./tree -p=path/to/dir
+``` 
 ### Console output:
 ![alt text](https://raw.githubusercontent.com/alexshelto/go-tree/master/screenshots/outputs.jpg)
 
