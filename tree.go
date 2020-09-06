@@ -8,17 +8,6 @@ recursively lists directory files and folders
 
 
 
-//TODO:
-/*
-Passing either slices or arrays of blacklists into the function via flag
-passing in blacklists without a size speceification
-
-block python system files and all that garb
-*/
-
-
-
-
 package main
 
 import (
@@ -48,27 +37,6 @@ func Color(colorString string) func(...interface{}) string {
   }
   return sprint
 }
-
-// func generateBlackList(enviornment string)[]string {
-//   switch enviornment {
-//   case "py":
-//     blackList := [16]string{".git", "__pycache__", "DS_Store","lib", "python3.7", "site-packages","include", "pip", "_internal", "operations", "models", "commands", "req", "utils", "vendor", "distlib"} 
-//     return blackList
-//   case "js":
-//     blackList := [3]string{"node_modules", ".git", "DS_Store"}
-//     return blackList
-  
-//   case "default":
-//     blackList := [2]string{".git", ".DS_Store"}
-//     return blackList
-  
-//   default:
-//     fmt.Println("Invalid blacklist")
-//     flags.printDefaults()
-//     os.Exit(1)
-// }
-// }
-
 
 
 
